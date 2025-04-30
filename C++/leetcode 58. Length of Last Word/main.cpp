@@ -5,23 +5,23 @@
 
 using namespace std;
 
-vector<string> split(const string &str, char delimiter)
-{
-    vector<string> tokens;
-    stringstream ss(str);
-    string token;
-
-    while (getline(ss, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-
-    return tokens;
-}
-
 int lengthOfLastWord(string s)
 {
-    vector<string> words = split(s, ' ');
+    int i = s.length() - 1;
+    int length = 0;
 
-    return words.back().length();
+    // 跳過尾端空格
+    while (i >= 0 && s[i] == ' ')
+    {
+        i--;
+    }
+
+    // 計算字元直到遇到i是空格
+    while (i >= 0 && s[i] != ' ')
+    {
+        length++;
+        i--;
+    }
+
+    return length;
 }
