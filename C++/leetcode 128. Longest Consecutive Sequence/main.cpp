@@ -6,21 +6,22 @@ using namespace std;
 
 int longestConsecutive(vector<int> &nums)
 {
-    int count = 0;
-    unordered_map<int, int> hashmap;
+    if (nums.size() == 0)
+        return 0;
 
-    for (int num : nums)
-    {
-        hashmap[num]++;
+    int maxCount = 1;
+    int count = 1;
 
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (hashmap[i] >= 1)
-            {
-                count++;
+    sort(nums.begin(), nums.end());
 
-                return count;
-            }
-        }
-    }
+    for (int i = 1; i < nums.size(); i++)
+        if (nums[i] == nums[i - 1])
+            continue; // 跳過重複數字
+        else if (nums[i] == nums[i - 1] + 1)
+            count++;
+        else
+            count = 1;               // 重置計數器
+    maxCount = max(count, maxCount); // 比較當前計數器是否大於歷史紀錄
+
+    return maxCount;
 }
