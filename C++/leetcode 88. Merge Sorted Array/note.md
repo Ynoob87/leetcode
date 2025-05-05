@@ -55,10 +55,10 @@ public:
             nums1[i] = result[i];
     }
 };```
+````
 
 ![alt text](image.png)
 
-以下是我在此期間問了AI什麼問題
-https://chatgpt.com/share/68188861-ca54-8005-86f6-3a5f365504c4
+以下是我在此期間問了 AI 什麼問題 希望能夠越刷越不依賴 AI
 
-````
+https://chatgpt.com/share/68188861-ca54-8005-86f6-3a5f365504c4
