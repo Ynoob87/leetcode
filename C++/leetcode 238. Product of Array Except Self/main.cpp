@@ -5,17 +5,23 @@ using namespace std;
 
 vector<int> productExceptSelf(vector<int> &nums)
 {
-    vector<int> result;
-    int totalProduct = 1;
 
-    for (int num : nums)
+    vector<int> result(nums.size(), 1);
+
+    int left = 1;
+    for (int i = 0; i < nums.size(); i++)
     {
-        totalProduct *= num;
+        result[i] *= left;
+        cout << "[" << result[i] << "," << nums[i] << "]" << "\n";
     }
 
-    for (int num : nums)
+    cout << "\n";
+
+    int right = 1;
+    for (int i = nums.size() - 1; i > 0; i--)
     {
-        result.push_back(totalProduct / num);
+        result[i] *= right;
+        cout << "[" << result[i] << "," << nums[i] << "]" << "\n";
     }
 
     return result;
