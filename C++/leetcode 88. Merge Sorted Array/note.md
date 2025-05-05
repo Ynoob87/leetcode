@@ -1,6 +1,9 @@
-第一次解的時候 出現 heap-buffer-overflow
+第一次解的時候 我的思路是
+創建一個 `result` 當作存放容器 接著用一個 Loops 來跑 然後把 0 排除
+但後來出現 heap-buffer-overflow 因為 nums2 比 nums1 短 所以出現了溢位
+而且只`push_back() nums1`
 
-````cpp
+```cpp
 class Solution {
 public:
     vector<int> merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
@@ -19,8 +22,8 @@ public:
 
         return result;
     }
-};```
-````
+};
+```
 
 後來注意到題目的 M 和 N 可以當迴圈判斷條件
 我這邊有兩個想法
@@ -31,14 +34,14 @@ public:
 結果吼來發現其實是要 直接修改 num1
 所以這邊有兩個寫法 一個是直接 `num1 = result;` 一個是
 
-````cpp
+```cpp
   for (int i = 0; i < m + n; ++i)
-            nums1[i] = result[i];```
-````
+            nums1[i] = result[i];
+```
 
 這是最終的解法
 
-````cpp
+```cpp
 class Solution {
 public:
     void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
@@ -54,8 +57,8 @@ public:
         for (int i = 0; i < m + n; ++i)
             nums1[i] = result[i];
     }
-};```
-````
+};
+```
 
 ![alt text](image.png)
 
