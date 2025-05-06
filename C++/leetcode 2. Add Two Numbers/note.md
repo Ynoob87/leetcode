@@ -1,29 +1,65 @@
-## 🧠 LeetCode `Add Two Numbers` 題目學習筆記
+# 💡 LeetCode 2. Add Two Numbers 題目筆記
 
-### 🔰 題目核心
+## 🧠 題目理解
 
-將兩個反轉順序儲存的非負整數（以 linked list 表示）相加，回傳相同格式的結果 linked list。
-舉例：
+題目給兩個「**反向儲存的 linked list**」，每個節點是一位數字，代表一個整數。
+要求你實作「兩數相加」並輸出成相同格式的 linked list。
+
+範例：
 
 ```
-l1 = [2,4,3], l2 = [5,6,4]
-代表的數字是 342 + 465 = 807
-輸出應為 [7,0,8]
+Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
+Output: 7 -> 0 -> 8
+Explanation: 342 + 465 = 807
 ```
 
 ---
 
-## 🚶‍♀️ 初始思路
+## 🥹 初次的思路
 
-你一開始看到圖片時的理解是：
+剛看到這題時我內心是這樣想的：
 
 ```
-  2 4 3
-+ 5 6 4
--------
+2 4 3
++5 6 4
+-----
+7 0 8
 ```
 
-覺得只要同位置相加即可。但當時沒想到「**進位（carry）**」的問題，加上對 linked list 還不熟，就寫出了這樣的版本：
+這樣一行一行相加，好像沒問題～
+但實際上我一開始不會操作 linked list（老實說看得有點痛苦 QQ），
+於是我突發奇想，請 AI 幫我寫了兩個函數：
+
+### 🛠 轉換工具函數
+
+```cpp
+// linked list → vector
+vector<int> listToVector(ListNode *head) {
+    vector<int> result;
+    while (head != nullptr) {
+        result.push_back(head->val);
+        head = head->next;
+    }
+    return result;
+}
+
+// vector → linked list
+ListNode *vectorToList(const vector<int> &nums) {
+    ListNode *dummy = new ListNode(0);
+    ListNode *current = dummy;
+    for (int num : nums) {
+        current->next = new ListNode(num);
+        current = current->next;
+    }
+    return dummy->next;
+}
+```
+
+有了這兩個 function，我就可以用最熟悉的 `vector` 處理！
+
+---
+
+## 🧪 初版嘗試
 
 ```cpp
 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
@@ -41,48 +77,23 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 }
 ```
 
----
+### 💥 問題 1：越界崩潰
 
-## 🐛 發現問題
-
-很快就發現幾個 Bug：
-
-1. 長度不同時會 out of range。
-2. 沒有處理進位（carry）。
-3. 不符合題目的「模擬加法」邏輯。
-
----
-
-## 💡 解法進化：補 0 + 處理進位
-
-在請教 AI 之後，學到了兩個觀念：
-
-### 🧩 1. 判斷越界：
+如果兩個 list 長度不同會出現 `out of range` 錯誤。
+解法是使用三元運算子來補 0：
 
 ```cpp
 int val1 = (i < nums1.size()) ? nums1[i] : 0;
 int val2 = (i < nums2.size()) ? nums2[i] : 0;
 ```
 
-這行簡潔地補了長度不一致時的 0，超級實用又聰明 ✨！
-
-### 🧮 2. 處理進位：
-
-```cpp
-int sum = val1 + val2 + carry;
-carry = sum / 10;
-result.push_back(sum % 10);
-```
-
-- `sum % 10`：只保留個位數。
-- `sum / 10`：取得進位（例如 18 → 1）。
-
 ---
 
-## ✅ 最終版本解法（vector 模擬加法）
+## ✨ 最終解法（含進位處理）
 
 ```cpp
-ListNode* addTwoNumbers(ListNode *l1, ListNode *l2) {
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
+{
     vector<int> result = {};
     vector<int> nums1 = listToVector(l1);
     vector<int> nums2 = listToVector(l2);
@@ -90,7 +101,8 @@ ListNode* addTwoNumbers(ListNode *l1, ListNode *l2) {
     int maxSize = max(nums1.size(), nums2.size());
     int carry = 0;
 
-    for (int i = 0; i < maxSize || carry; i++) {
+    for (int i = 0; i < maxSize || carry; i++)
+    {
         int val1 = (i < nums1.size()) ? nums1[i] : 0;
         int val2 = (i < nums2.size()) ? nums2[i] : 0;
 
@@ -106,14 +118,108 @@ ListNode* addTwoNumbers(ListNode *l1, ListNode *l2) {
 
 ---
 
-## 🔁 轉換工具
+## 🤯 關鍵知識補充
 
-- `listToVector(ListNode*)`：把 linked list 轉成 `vector<int>`，方便操作。
-- `vectorToList(vector<int>)`：再把結果轉回 linked list。
+### 為什麼需要 `%` 和 `/`？
+
+拿 `999 + 999` 為例：
+
+```
+9 + 9 = 18
+保留個位數：8
+進位 = 1（carry）
+```
+
+所以：
+
+```cpp
+carry = sum / 10;        // 把多的部分留著
+result.push_back(sum % 10);  // 留下個位數
+```
 
 ---
 
-## 💬 心得小語
+## 🎯 題目本質
 
-你一開始遇到困難，但願意釐清問題、逐步簡化邏輯，這是很棒的學習過程！🎉
-理解 carry 與 linked list 的難點，是解這題的關鍵，你已經掌握住啦 (๑>◡<๑)
+這題本質上就是「**模擬直式加法**」的過程：
+
+- 每位相加
+- 加上前一位的進位
+- 處理最後多出來的進位
+
+---
+
+## ✅ 最終實作
+
+🔧 包含完整結構 + 測試函數可直接提交！
+
+```cpp
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* vectorToList(const std::vector<int>& nums) {
+        ListNode* dummy = new ListNode(0);
+        ListNode* current = dummy;
+
+        for (int num : nums) {
+            current->next = new ListNode(num);
+            current = current->next;
+        }
+
+        return dummy->next;
+    }
+
+    vector<int> listToVector(ListNode* head) {
+        std::vector<int> result;
+        while (head != nullptr) {
+            result.push_back(head->val);
+            head = head->next;
+        }
+        return result;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        vector<int> result = {};
+        vector<int> nums1 = listToVector(l1);
+        vector<int> nums2 = listToVector(l2);
+
+        int maxSize = max(nums1.size(), nums2.size());
+        int carry = 0;
+
+        for (int i = 0; i < maxSize || carry; i++) {
+            int val1 = (i < nums1.size()) ? nums1[i] : 0;
+            int val2 = (i < nums2.size()) ? nums2[i] : 0;
+
+            int sum = val1 + val2 + carry;
+
+            carry = sum / 10;
+
+            result.push_back(sum % 10);
+        }
+
+        return vectorToList(result);
+    }
+};
+```
+
+![alt text](image-1.png)
+
+---
+
+## 💌 給未來的自己：
+
+這次我們用熟悉的 `vector` 把整個邏輯弄懂，超棒的！
+但未來的你，當你更熟悉 `linked list` 操作時，
+記得回來挑戰一次「**純正統 linked list 解法**」吧～
+這樣你一定會更強的！你做得到的！(๑•̀ㅂ•́)و✧
+
+---
