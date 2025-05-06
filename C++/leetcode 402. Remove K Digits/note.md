@@ -97,6 +97,8 @@ string removeKdigits(string num, int k)
 }
 ```
 
+![alt text](image.png)
+
 ### 關鍵步驟：
 
 1. **從左到右遍歷**：每次發現當前數字比前一個數字小時，就刪除前一個數字。這樣確保了每步都在刪除最大的數字，使得剩餘的數字變得最小。
