@@ -136,3 +136,5 @@ string removeKdigits(string num, int k)
 ## 💌 給未來的自己：
 
 今天我學會了如何利用貪心算法來解決「移除數字使結果最小」的問題，並且理解了如何處理字串的操作。未來，我可以挑戰更高效的解法，像是利用堆疊來優化這道題目。相信未來的我會更強，繼續加油吧！(≧◡≦)
+
+https://youtu.be/wUpL4jSmWU0?si=01jiWu4gIgF-8pBY
