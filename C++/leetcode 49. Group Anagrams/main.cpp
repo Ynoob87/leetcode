@@ -5,22 +5,26 @@
 
 using namespace std;
 
-vector<vector<string>> groupAnagrams(vector<string> &strs)
+class Solution
 {
-    unordered_map<string, vector<string>> groups;
-    vector<vector<string>> result;
-
-    for (string str : strs)
+public:
+    vector<vector<string>> groupAnagrams(vector<string> &strs)
     {
-        string sortedStr = str;
-        sort(sortedStr.begin(), sortedStr.end());
-        groups[sortedStr].push_back(str);
-    }
+        vector<vector<string>> result;
+        unordered_map<string, vector<string>> map;
 
-    for (auto group : groups)
-    {
-        result.push_back(group.second);
-    }
+        for (string s : strs)
+        {
+            string sorted = s;
+            sort(sorted.begin(), sorted.end());
+            map[sorted].push_back(s);
+        }
 
-    return result;
-}
+        for (auto group : map)
+        {
+            result.push_back(group.second);
+        }
+
+        return result;
+    }
+};
