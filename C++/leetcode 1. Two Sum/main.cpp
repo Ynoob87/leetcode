@@ -20,12 +20,3 @@ vector<int> twoSum(vector<int> &nums, int target)
 
     return {};
 }
-
-int main()
-{
-    int target = 9;
-    vector<int> nums = {2, 7, 11, 15};
-    vector<int> result = twoSum(nums, target);
-
-    return 0;
-}
