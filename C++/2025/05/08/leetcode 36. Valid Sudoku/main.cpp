@@ -1,38 +1,38 @@
 #include <iostream>
 #include <vector>
-
 #include <unordered_map>
 
 using namespace std;
 
-bool isValidSudoku(vector<vector<char>> &board)
+class Solution
 {
-    unordered_map<char, int> rowCount;
-    unordered_map<char, int> colCount;
-    unordered_map<char, int> boxCount;
-
-    for (int i = 0; i < board.size(); i++)
+public:
+    bool isValidSudoku(vector<vector<char>> &board)
     {
-        for (int j = 0; j < board.size(); j++)
+        unordered_map<char, int> rowMap;
+        unordered_map<char, int> colMap;
+        unordered_map<char, int> boxMap;
+
+        for (int i = 0; i < board.size(); i++)
         {
-            char val = board[i][j];
-            if (val == '.')
+            for (int j = 0; j < board.size(); j++)
             {
-                continue;
+                char value = board[i][j];
+
+                if (value == '.')
+                    continue;
+
+                int boxIndex = (i / 3) * 3 + (j / 3);
+
+                if (rowMap[i] == value || colMap[j] == value || boxMap[boxIndex] == value)
+                    return false;
+
+                boxMap[boxIndex] = value;
+                rowMap[i] = value;
+                colMap[j] = value;
             }
-
-            int boxIndex = (i / 3) * 3 + (j / 3);
-
-            if (rowCount.count(val) == 1 || colCount.count(val) == 1 || boxCount.count(val) == 1)
-                return false;
-
-            boxCount[boxIndex] = val;
-            rowCount[i] = val;
-            colCount[j] = val;
-
-            cout << board[i][j];
         }
-    }
 
-    return true;
-}
+        return true;
+    }
+};
