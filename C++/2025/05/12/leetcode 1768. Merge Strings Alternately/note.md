@@ -1,5 +1,3 @@
----
-
 ## 🧠 LeetCode 1768. Merge Strings Alternately 解題筆記
 
 ### ✨ 題目目標：
